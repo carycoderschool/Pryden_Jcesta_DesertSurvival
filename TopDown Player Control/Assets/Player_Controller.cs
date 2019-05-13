@@ -5,9 +5,12 @@ using UnityEngine;
 public class Player_Controller : MonoBehaviour
 {
 
-    //Inspector Variables
-
-
+    //Variables
+    public bool inPickUpRange = false;
+    public static bool starterSword = false;
+    public bool canAttack = false;
+    public int health;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -18,8 +21,11 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveForward(); // Player Movement 
-
+        MoveForward();// Player Movement 
+        if (Input.GetButton("Fire1") && (canAttack))
+        {
+            print("attacking");
+        }
     }
 
     void MoveForward()
@@ -32,7 +38,34 @@ public class Player_Controller : MonoBehaviour
         transform.Translate(movement * Time.deltaTime);
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "pickUpAble")
+        {
+            inPickUpRange = true;
+        }
+
+
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "pickUpAble")
+        {
+            inPickUpRange = false;
+        }
+    }
+    public void pickUp()
+    {
+        if ((inPickUpRange == true) && (Input.GetKey("e")))
+        {
+            canAttack = true;
+        }
+    }
+
 }
+
+
 
        /* if (Input.GetKey("w"))//Press w key to move forward on the Y AXIS
         {
